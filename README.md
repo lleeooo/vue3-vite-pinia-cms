@@ -1,1 +1,1 @@
-# vue3-vite-pinia-cms
+# vite-vue3-pinia-cms-base
