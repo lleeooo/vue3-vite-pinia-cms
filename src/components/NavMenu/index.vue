@@ -17,14 +17,14 @@
           <!-- 多级item -->
           <el-sub-menu :index="`${item.id}`">
             <template #title>
-              <el-icon v-if="item.icon"> <component :is="item.iconPlus" /> </el-icon>
+              <el-icon v-if="item.icon"> <component :is="item.icon" /> </el-icon>
               <!-- <i v-if="item.icon" :class="item.iconPlus"></i> -->
               <span>{{ item.name }}</span>
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
               <el-menu-item :index="`${subitem.id}`" @click="onMenuClick(subitem)">
-                <el-icon v-if="subitem.icon"> <component :is="item.iconPlus" /> </el-icon>
+                <el-icon v-if="subitem.icon"> <component :is="item.icon" /> </el-icon>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
             </template>
