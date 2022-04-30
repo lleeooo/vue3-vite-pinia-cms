@@ -22,7 +22,7 @@
       Edit
       <code>components/HelloWorld.vue</code> to test hot module replacement.
     </p>
-    <h2>{{ name }}</h2>
+    <!-- <h2>{{ name }}</h2> -->
 
     <el-row class="mb-4">
       <el-button>Default</el-button>
@@ -68,8 +68,9 @@ import { Search, Edit, Check, Message, Star, Delete } from '@element-plus/icons-
 
 //pinia 用法
 import { useUserStore } from '@/store';
+
 const userStore = useUserStore();
-const name = userStore.name;
+// const name = userStore.name;
 
 defineProps<{ msg: string }>();
 
