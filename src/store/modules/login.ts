@@ -37,8 +37,6 @@ export const useUserStore = defineStore('user', {
       this.menu = menuList;
 
       //动态加载路由
-      const rourters = mapRouters(menuList);
-      rourters.forEach((route) => router.addRoute('main', route));
       router.push('/main');
     },
     loadLocalLogin() {
@@ -50,6 +48,13 @@ export const useUserStore = defineStore('user', {
 
       const userMenus = localCache.getLocalCache('userMenu');
       if (userMenus) this.menu = userMenus;
+
+      const rourters = mapRouters(userMenus);
+      rourters.forEach((route) => router.addRoute('main', route));
+
+      //刷新后的跳转
+      const oldRouter = localCache.getSessionCache('oldRouter');
+      oldRouter ? router.push(oldRouter.url) : router.push('/main');
     },
   },
 });
