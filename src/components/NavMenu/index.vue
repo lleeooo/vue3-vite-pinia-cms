@@ -10,7 +10,7 @@
       text-color="#b7bdc3"
       active-text-color="#0a60bd"
       :collapse="isCollapse"
-      default-active="2"
+      :default-active="defaultActive"
     >
       <template v-for="item in userMenus" :key="item.id">
         <template v-if="item.type === 1">
@@ -18,7 +18,6 @@
           <el-sub-menu :index="`${item.id}`">
             <template #title>
               <el-icon v-if="item.icon"> <component :is="item.icon" /> </el-icon>
-              <!-- <i v-if="item.icon" :class="item.iconPlus"></i> -->
               <span>{{ item.name }}</span>
             </template>
             <!-- 遍历里面的item -->
@@ -45,15 +44,23 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/store';
 import { useRouter } from 'vue-router';
-import { computed, toRaw } from 'vue';
+import { computed, toRaw, shallowRef, onMounted, ref } from 'vue';
 import { Monitor, Setting, Goods, ChatDotRound } from '@element-plus/icons-vue';
+import localCache from '@/utils/cache';
 
-const iconList = {
+let defaultActive = ref('39');
+
+onMounted(() => {
+  const oldRouter = localCache.getSessionCache('oldRouter');
+  defaultActive.value = oldRouter.id ? `${oldRouter.id}` : '39';
+});
+
+const iconList = shallowRef({
   'el-icon-monitor': Monitor,
   'el-icon-setting': Setting,
   'el-icon-goods': Goods,
   'el-icon-chat-line-round': ChatDotRound,
-};
+});
 
 defineProps({
   isCollapse: {
@@ -68,9 +75,10 @@ const userStore = useUserStore();
 const userMenus = computed(() => userStore.menu);
 userMenus.value.forEach((item) => (item.icon = iconList[item.icon]));
 
-console.log(userMenus.value);
-
 const onMenuClick = (item: any) => {
+  //保存旧路径
+  localCache.setSessionCache('oldRouter', toRaw(item));
+
   router.push({
     path: toRaw(item).url,
   });
